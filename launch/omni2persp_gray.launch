@@ -1,0 +1,28 @@
+<launch>
+  <arg name="bagfile"/>
+	<arg name="inputImagesTopic" default="/THETA_S/image_raw"/>
+	<arg name="outputImagesTopic" default="/camera/rectifiedOmni/image"/>
+
+	<arg name="imWidth" default="848"/>
+  <arg name="imHeight" default="800"/>
+  <arg name="focalFact" default="0.33"/>
+
+  <node name="omni2persp" pkg="ros_omni2persp" type="omni2persp" output="screen"> <!--  -->
+  <param name="inputImagesTopic" type="string" value="$(arg inputImagesTopic)"/> 
+  <param name="outputImagesTopic" type="string" value="$(arg outputImagesTopic)"/> 
+
+  <param name="imWidth" type="int" value="$(arg imWidth)"/>
+  <param name="imHeight" type="int" value="$(arg imHeight)"/>
+  <param name="opt_focalFact" type="double" value="$(arg focalFact)"/>
+
+  <param name="image_transport" type="string" value="compressed"/> 
+  </node>
+  
+	<node pkg="rosbag" type="play" name="rosbag_data_play" args="$(arg bagfile)"/> <!--  launch-prefix="bash -c 'sleep 5s; $0 $@' " -->
+
+<!--  <node pkg="rosbag" type="record" name="rosbag_equi_record" args="$(arg outputImagesTopic)"/> -->
+
+
+</launch>
+
+
